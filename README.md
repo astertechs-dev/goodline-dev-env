@@ -1,8 +1,9 @@
-# LAMP stack built with Docker Compose
+# Goodline dev-env
 
 ![Landing Page](https://user-images.githubusercontent.com/43859895/141092846-905eae39-0169-4fd7-911f-9ff32c48b7e8.png)
 
-A basic LAMP stack environment built using Docker Compose. It consists of the following:
+Docker Composeを使って構築された基本的なLAMPスタック環境です。 <br/>
+構成は以下のとおりです。
 
 - PHP
 - Apache
@@ -10,7 +11,8 @@ A basic LAMP stack environment built using Docker Compose. It consists of the fo
 - phpMyAdmin
 - Redis
 
-As of now, we have several different PHP versions. Use appropriate php version as needed:
+現在、PHPについて、以下のバージョンを用意しています。 <br/>
+必要に応じて適切なバージョンを使用してください。
 
 - 5.4.x
 - 5.6.x
@@ -21,37 +23,38 @@ As of now, we have several different PHP versions. Use appropriate php version a
 - 8.0.x
 - 8.1.x
 
-## Installation
-
-- Clone this repository on your local computer
-- configure .env as needed
-- Run the `docker-compose up -d`.
+## インストールについて
 
 ```shell
-git clone https://github.com/sprintcube/docker-compose-lamp.git
-cd docker-compose-lamp/
+# リポジトリをクローンする
+git clone git@github.com:astertechs-dev/goodline-dev-env.git
+cd goodline-dev-env/
+# sample.env を必要に応じて編集する
 cp sample.env .env
-// modify sample.env as needed
+# docker-compose で環境を構築する
 docker-compose up -d
-// visit localhost
 ```
 
-Your LAMP stack is now ready!! You can access it via `http://localhost`.
+アプリケーションが起動しているかを確認するために、以下のURLにアクセスしてください。 
+`http://localhost:8090`.
 
-## Configuration and Usage
+## 設定について
 
-### General Information
+### 一般情報
+このDocker Stackはローカル開発用にビルドされたもので、本番用ではありません。
+本番環境として利用するためには、最低限以下の項目を設定する必要があります。
 
-This Docker Stack is build for local development and not for production usage.
+- PHPハンドラー: mod_php => php-fpm
+- 適切なソースIP制限で、MySQLユーザーを保護する。
 
-### Configuration
+### 構成
 
-This package comes with default configuration options. You can modify them by creating `.env` file in your root directory.
-To make it easy, just copy the content from `sample.env` file and update the environment variable values as per your need.
+本パッケージには、デフォルトの設定オプションが付属しています。これらの設定は、ルートディレクトリに `.env` ファイルを作成することで変更することができます。
+ここでは、`sample.env`ファイルの内容をコピーし、必要な環境変数の値を更新することで簡単に変更できます。
 
-### Configuration Variables
+### 設定変数
 
-There are following configuration variables available and you can customize them by overwritting in your own `.env` file.
+以下の設定変数が用意されており、自分の `.env` ファイルに上書きすることでカスタマイズすることができます。
 
 ---
 
@@ -59,11 +62,11 @@ There are following configuration variables available and you can customize them
 
 ---
 
-_**PHPVERSION**_
-Is used to specify which PHP Version you want to use. Defaults always to latest PHP Version.
+_**PHPVERSION**_ <br/>
+使用するPHPのバージョンを指定するために使用します。デフォルトは常に最新のPHPバージョンです。
 
-_**PHP_INI**_
-Define your custom `php.ini` modification to meet your requirments.
+_**PHP_INI**_  <br/>
+必要に応じて、`php.ini` ファイルを独自に定義してください。
 
 ---
 
@@ -71,68 +74,70 @@ Define your custom `php.ini` modification to meet your requirments.
 
 ---
 
-_**DOCUMENT_ROOT**_
+_**DOCUMENT_ROOT**_<br/>
 
-It is a document root for Apache server. The default value for this is `./www`. All your sites will go here and will be synced automatically.
+Apacheサーバーのドキュメントルートである。<br/>
+デフォルトは `./www` です。すべてのサイトがここに置かれ、自動的に同期されます。
 
-_**APACHE_DOCUMENT_ROOT**_
+_**APACHE_DOCUMENT_ROOT**_<br/>
 
-Apache config file value. The default value for this is /var/www/html.
+Apacheの設定ファイルの値です。初期値は /var/www/html です。
 
-_**VHOSTS_DIR**_
+_**VHOSTS_DIR**_<br/>
 
-This is for virtual hosts. The default value for this is `./config/vhosts`. You can place your virtual hosts conf files here.
+デフォルトは `./config/vhosts` です。<br/>
+バーチャルホストの conf ファイルはここに置くことができます。
 
-> Make sure you add an entry to your system's `hosts` file for each virtual host.
+> 各バーチャルホストのために、システムの `hosts` ファイルにエントリを追加することを確認してください。
 
-_**APACHE_LOG_DIR**_
+_**APACHE_LOG_DIR**_<br/>
 
-This will be used to store Apache logs. The default value for this is `./logs/apache2`.
-
+Apacheのログ保存用ディレクトリ。デフォルト値は `./logs/apache2` です。
 ---
 
 #### Database
 
 ---
 
-> For Apple Silicon Users:
-> Please select Mariadb as Database. Oracle doesn't build their SQL Containers for the arm Architecure
+_**DATABASE**_<br/>
 
-_**DATABASE**_
+使用するMySQLまたはMariaDBバージョンを定義します。
 
-Define which MySQL or MariaDB Version you would like to use.
+_**MYSQL_INITDB_DIR**_<br/>
 
-_**MYSQL_INITDB_DIR**_
+コンテナを初めて起動したときに、このディレクトリにある拡張子 `.sh`、`.sql`、`.sql.gz`、`.sql.gz` のファイルが表示されます。<br/>
+`.sql.xz` はアルファベット順で実行されます。ファイル実行権限のない `.sh` ファイルは実行されず、ソースされる。
+デフォルト値は `./config/initdb` です。
 
-When a container is started for the first time files in this directory with the extensions `.sh`, `.sql`, `.sql.gz` and
-`.sql.xz` will be executed in alphabetical order. `.sh` files without file execute permission are sourced rather than executed.
-The default value for this is `./config/initdb`.
+_**MYSQL_DATA_DIR**_<br/>
 
-_**MYSQL_DATA_DIR**_
+MySQLのデータディレクトリです。<br/>
+デフォルト値は `./data/mysql` です。<br/>
+すべてのMySQLデータファイルはここに保存されます。
 
-This is MySQL data directory. The default value for this is `./data/mysql`. All your MySQL data files will be stored here.
+_**MYSQL_LOG_DIR**_<br/>
 
-_**MYSQL_LOG_DIR**_
-
-This will be used to store Apache logs. The default value for this is `./logs/mysql`.
+ログ保存用ディレクトリ。デフォルト値は `./logs/mysql` です。
 
 ## Web Server
 
-Apache is configured to run on port 80. So, you can access it via `http://localhost`.
+Apacheは80番ポートで動作するように設定されています。<br/>
+そのため、`http://localhost`経由でアクセスすることができます。
 
 #### Apache Modules
 
-By default following modules are enabled.
+デフォルトでは、以下のモジュールが有効になっています。
 
 - rewrite
 - headers
 
-> If you want to enable more modules, just update `./bin/phpX/Dockerfile`. You can also generate a PR and we will merge if seems good for general purpose.
-> You have to rebuild the docker image by running `docker-compose build` and restart the docker containers.
+> `./bin/phpX/Dockerfile`を更新するだけで、より多くのモジュールを有効にすることができます。また、PRを作成し、汎用性が高そうならマージすることもできます。
+> Docker-compose build`を実行してDockerイメージを再構築し、Dockerコンテナを再起動する必要があります。
 
-#### Connect via SSH
+#### SSH経由で接続する
 
-You can connect to web server using `docker-compose exec` command to perform various operation on it. Use below command to login to container via ssh.
+docker-compose の `exec` コマンドでWebサーバに接続し、様々な処理を行うことができます。<br/>
+SSHでコンテナにログインする場合は、以下のコマンドを使用します。
 
 ```shell
 docker-compose exec webserver bash
@@ -140,12 +145,12 @@ docker-compose exec webserver bash
 
 ## PHP
 
-The installed version of php depends on your `.env`file.
+インストールされるphpのバージョンは、`.env` ファイルに依存します。
 
 #### Extensions
 
-By default following extensions are installed.
-May differ for PHP Versions <7.x.x
+デフォルトでは、以下の拡張機能がインストールされています。<br/>
+PHPバージョン<7.x.x>の場合は異なる場合があります。
 
 - mysqli
 - pdo_sqlite
@@ -161,22 +166,22 @@ May differ for PHP Versions <7.x.x
 - xmlrpc
 - gd
 
-> If you want to install more extension, just update `./bin/webserver/Dockerfile`. You can also generate a PR and we will merge if it seems good for general purpose.
-> You have to rebuild the docker image by running `docker-compose build` and restart the docker containers.
+> ./bin/webserver/Dockerfile`を更新することで、より多くの拡張機能をインストールすることができます。また、PRを作成し、汎用性が高そうであればマージすることも可能です。
+> Docker-compose build` を実行して docker イメージを再構築し、Docker コンテナを再起動する必要があります。
 
 ## Xdebug
 
-Xdebug comes installed by default and it's version depends on the PHP version chosen in the `".env"` file.
+Xdebugはデフォルトでインストールされ、そのバージョンは `.env` ファイルで選択したPHPバージョンに依存します。
 
-**Xdebug versions:**
+**【Xdebug versions:** <br/>
 
 PHP <= 7.3: Xdebug 2.X.X
 
 PHP >= 7.4: Xdebug 3.X.X
 
-To use Xdebug you need to enable the settings in the `./config/php/php.ini` file according to the chosen version PHP.
+Xdebugを使用するには、`./config/php/php.ini` ファイルで、選択したバージョンのPHPに応じた設定を有効にする必要があります。
 
-Example:
+【例】
 
 ```
 # Xdebug 2
@@ -194,11 +199,15 @@ Example:
 #xdebug.idekey=VSCODE
 ```
 
-Xdebug VS Code: you have to install the Xdebug extension "PHP Debug". After installed, go to Debug and create the launch file so that your IDE can listen and work properly.
+**【Xdebug VS Code】**<br/>
+Xdebugの拡張機能「PHP Debug」をインストールする必要があります。<br/>
+インストール後、Debugに移動して起動ファイルを作成し、IDEがリッスンして正しく動作するようにします。
 
-Example:
+【例】
 
-**VERY IMPORTANT:** the `pathMappings` depends on how you have opened the folder in VS Code. Each folder has your own configurations launch, that you can view in `.vscode/launch.json`
+**【重要】** <br/>
+`pathMappings`は、VS Codeでフォルダをどのように開いたかに依存します。<br/>
+各フォルダには独自の起動設定があり、`.vscode/launch.json` で確認することができます。
 
 ```json
 {
@@ -211,7 +220,6 @@ Example:
       // "port": 9000, // Xdebug 2
       "port": 9003, // Xdebug 3
       "pathMappings": {
-        // "/var/www/html": "${workspaceFolder}/www" // if you have opened VSCODE in root folder
         "/var/www/html": "${workspaceFolder}" // if you have opened VSCODE in ./www folder
       }
     }
@@ -225,62 +233,59 @@ Now, make a breakpoint and run debug.
 
 ## Redis
 
-It comes with Redis. It runs on default port `6379`.
+Redisが付属しています。デフォルトのポート `6379` で実行されます。
 
 ## SSL (HTTPS)
 
-Support for `https` domains is built-in but disabled by default. There are 3 ways you can enable and configure SSL; `https` on `localhost` being the easiest. If you are trying to recreating a testing environment as close as possible to a production environment, any domain name can be supported with more configuration.
+https ドメインのサポートは内蔵されていますが、デフォルトでは無効になっています。<br/>
+SSL を有効化し設定する方法は 3 つあり、最も簡単なのは `localhost` での https` です。<br/>
+本番環境に近いテスト環境の再現であれば、より多くの設定を行えば、どのようなドメイン名でもサポートできます。
 
-**Notice:** For every non-localhost domain name you wish to use `https` on, you will need to modify your computers [hosts file](https://en.wikipedia.org/wiki/Hosts_%28file%29) and point the domain name to `127.0.0.1`. If you fail to do this SSL will not work and you will be routed to the internet every time you try to visit that domain name locally.
+**【注意】** <br/>
+ローカルホスト以外のドメイン名で、https を使用したい場合は、コンピュータの [hosts file](https://en.wikipedia.org/wiki/Hosts_%28file%29) を変更し、ドメイン名を `127.0.0.1` に向ける必要があります。この作業を怠ると、SSLは機能せず、ローカルでそのドメイン名にアクセスしようとするたびに、インターネットにルーティングされることになります。
 
-### 1) HTTPS on Localhost
+### 1) ローカル環境でHTTPSを利用する場合
 
-To enable `https` on `localhost` (https://localhost) you will need to:
+localhost で `https` を有効にするためには、次のことが必要です。
 
-1. Use a tool like [mkcert](https://github.com/FiloSottile/mkcert#installation) to create an SSL certificate for `localhost`:
-   - With `mkcert`, in the terminal run `mkcert localhost 127.0.0.1 ::1`.
-   - Rename the files that were generated `cert.pem` and `cert-key.pem` respectively.
-   - Move these files into your docker setup by placing them in `config/ssl` directory.
-2. Uncomment the `443` vhost in `config/vhosts/default.conf`.
+1. [mkcert](https://github.com/FiloSottile/mkcert#installation) のようなツールを使用して、`localhost` の SSL 証明書を作成します：
+   - 端末で以下のコマンドを実行します。
+   ```shell
+   mkcert localhost 127.0.0.1 ::1
+   ```
+   - 生成されたファイルをそれぞれ `cert.pem` と `cert-key.pem` に名称変更します。
+   - これらのファイルを `config/ssl` ディレクトリに配置し、Docker セットアップに移動します。
+2. `config/vhosts/default.conf` の `443` vhost のコメントを解除します。
 
-Done. Now any time you turn on your LAMP container `https` will work on `localhost`.
+これで、LAMPコンテナの電源を入れると、いつでも `https` が `localhost` で動作するようになります。
 
-### 2) HTTPS on many Domains with a Single Certificate
+### 2) 1枚の証明書から複数のドメインでHTTPSを利用する場合
 
-If you would like to use normal domain names for local testing, and need `https` support, the simplest solution is an SSL certificate that covers all the domain names:
+ローカルテストに通常のドメイン名を使用し、かつhttpsのサポートが必要な場合、最も単純な解決策は、すべてのドメイン名をカバーするSSL証明書を使用することです：
 
-1. Use a tool like [mkcert](https://github.com/FiloSottile/mkcert#installation) to create an SSL certificate that covers all the domain names you want:
-   - With `mkcert`, in the terminal run `mkcert example.com "*.example.org" myapp.dev localhost 127.0.0.1 ::1` where you replace all the domain names and IP addresses to the ones you wish to support.
-   - Rename the files that were generated `cert.pem` and `cert-key.pem` respectively.
-   - Move these files into your docker setup by placing them in `config/ssl` directory.
-2. Uncomment the `443` vhost in `config/vhosts/default.conf`.
+1. mkcert](https://github.com/FiloSottile/mkcert#installation) のようなツールを使って、必要なドメイン名をすべてカバーするSSL証明書を作成します：
+   - 端末で以下のコマンドを実行し、ドメイン名とIPアドレスをすべてサポートしたいものに置き換えます。 
+     ```shell
+     mkcert example.com "*.example.org" myapp.dev localhost 127.0.0.1 ::1
+     ```
+   - 生成されたファイルをそれぞれ `cert.pem` と `cert-key.pem` にリネームします。
+   - これらのファイルを `config/ssl` ディレクトリに配置し、Docker セットアップに移動します。
+2. `config/vhosts/default.conf` の `443` vhost のコメントを解除します。
 
-Done. Since you combined all the domain names into a single certificate, the vhost file will support your setup without needing to modify it further. You could add domain specific rules if you wish however. Now any time you turn on your LAMP container `https` will work on all the domains you specified.
+すべてのドメイン名を1つの証明書にまとめたので、vhostファイルはそれ以上修正する必要がなく、あなたのセットアップをサポートします。<br/>
+しかし、必要であれば、ドメイン固有のルールを追加することができます。<br/>
+これで、LAMPコンテナを起動すると、指定したすべてのドメインで「https」が動作するようになります。
 
-### 3) HTTPS on many Domain with Multiple Certificates
+### 3) 複数の証明書を持つドメインで HTTPS を利用する場合
 
-If you would like your local testing environment to exactly match your production, and need `https` support, you could create an SSL certificate for every domain you wish to support:
+もし、ローカルのテスト環境を本番環境と完全に一致させ、かつ、「https」のサポートが必要な場合、サポートしたいドメインごとにSSL証明書を作成することができます：
 
-1. Use a tool like [mkcert](https://github.com/FiloSottile/mkcert#installation) to create an SSL certificate that covers the domain name you want:
-   - With `mkcert`, in the terminal run `mkcert [your-domain-name(s)-here]` replacing the bracket part with your domain name.
-   - Rename the files that were generated to something unique like `[name]-cert.pem` and `[name]-cert-key.pem` replacing the bracket part with a unique name.
-   - Move these files into your docker setup by placing them in `config/ssl` directory.
-2. Using the `443` example from the vhost file (`config/vhosts/default.conf`), make new rules that match your domain name and certificate file names.
+1. [mkcert](https://github.com/FiloSottile/mkcert#installation) のようなツールを使用して、必要なドメイン名をカバーする SSL 証明書を作成します：
+   - 端末で`mkcert [your-domain-name(s)-here]` を実行し、括弧の部分を自分のドメイン名に置き換えます。
+   - 生成されたファイルを `[name]-cert.pem` や `[name]-cert-key.pem` のように、括弧の部分をユニークな名前に変更する。
+   - これらのファイルを `config/ssl` ディレクトリに置き、Docker セットアップに移動します。
+2. vhostファイル（`config/vhosts/default.conf`）の`443`の例を使って、ドメイン名と証明書ファイル名に一致する新しいルールを作成します。
 
-Done. The LAMP container will auto pull in any SSL certificates in `config/ssl` when it starts. As long as you configure the vhosts file correctly and place the SSL certificates in `config/ssl`, any time you turn on your LAMP container `https` will work on your specified domains.
+LAMPコンテナは、起動時に`config/ssl`にあるSSL証明書を自動的に引き込みます。<br/>
+vhostsファイルを正しく設定し、SSL証明書を `config/ssl` に配置していれば、LAMPコンテナの電源を入れたときに、指定したドメインでいつでも `https` が機能するようになります。
 
-## Contributing
-
-We are happy if you want to create a pull request or help people with their issues. If you want to create a PR, please remember that this stack is not built for production usage, and changes should be good for general purpose and not overspecialized.
-
-> Please note that we simplified the project structure from several branches for each php version, to one centralized master branch. Please create your PR against master branch.
->
-> Thank you!
-
-## Why you shouldn't use this stack unmodified in production
-
-We want to empower developers to quickly create creative Applications. Therefore we are providing an easy to set up a local development environment for several different Frameworks and PHP Versions.
-In Production you should modify at a minimum the following subjects:
-
-- php handler: mod_php=> php-fpm
-- secure mysql users with proper source IP limitations
