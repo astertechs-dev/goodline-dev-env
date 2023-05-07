@@ -3,7 +3,7 @@ version: "3"
 services:
   webserver:
     build:
-      context: ./bin/${PHPVERSION}
+      context: "./containers/${PHPVERSION}"
     container_name: "${COMPOSE_PROJECT_NAME}-${PHPVERSION}"
     restart: "always"
     ports:
@@ -31,7 +31,7 @@ services:
       - "host.docker.internal:host-gateway"
   database:
     build:
-      context: "./bin/${DATABASE}"
+      context: "./containers/${DATABASE}"
     container_name: "${COMPOSE_PROJECT_NAME}-${DATABASE}"
     restart: "always"
     ports:
