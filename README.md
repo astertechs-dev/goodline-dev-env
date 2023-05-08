@@ -265,9 +265,9 @@ localhost で `https` を有効にするためには、次のことが必要で�
 
 1. [mkcert](https://github.com/FiloSottile/mkcert#installation) のようなツールを使って、必要なドメイン名をすべてカバーするSSL証明書を作成します：
    - 端末で以下のコマンドを実行し、ドメイン名とIPアドレスをすべてサポートしたいものに置き換えます。 
-     ```shell
-     mkcert example.com "*.example.org" myapp.dev localhost 127.0.0.1 ::1
-     ```
+   ```shell
+   mkcert example.com "*.example.org" myapp.dev localhost 127.0.0.1 ::1
+   ```
    - 生成されたファイルをそれぞれ `cert.pem` と `cert-key.pem` にリネームします。
    - これらのファイルを `config/ssl` ディレクトリに配置し、Docker セットアップに移動します。
 2. `config/vhosts/default.conf` の `443` vhost のコメントを解除します。
