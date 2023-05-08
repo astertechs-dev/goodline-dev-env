@@ -93,6 +93,7 @@ _**VHOSTS_DIR**_<br/>
 _**APACHE_LOG_DIR**_<br/>
 
 Apacheのログ保存用ディレクトリ。デフォルト値は `./logs/apache2` です。
+
 ---
 
 #### Database
