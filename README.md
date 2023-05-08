@@ -263,7 +263,7 @@ localhost で `https` を有効にするためには、次のことが必要で�
 
 ローカルテストに通常のドメイン名を使用し、かつhttpsのサポートが必要な場合、最も単純な解決策は、すべてのドメイン名をカバーするSSL証明書を使用することです：
 
-1. mkcert](https://github.com/FiloSottile/mkcert#installation) のようなツールを使って、必要なドメイン名をすべてカバーするSSL証明書を作成します：
+1. [mkcert](https://github.com/FiloSottile/mkcert#installation) のようなツールを使って、必要なドメイン名をすべてカバーするSSL証明書を作成します：
    - 端末で以下のコマンドを実行し、ドメイン名とIPアドレスをすべてサポートしたいものに置き換えます。 
      ```shell
      mkcert example.com "*.example.org" myapp.dev localhost 127.0.0.1 ::1
