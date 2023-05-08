@@ -220,9 +220,8 @@ Xdebugの拡張機能「PHP Debug」をインストールする必要があり�
 }
 ```
 
-Now, make a breakpoint and run debug.
-
-**Tip!** After theses configurations, you may need to restart container.
+**【注意】** <br/>
+これらの設定後にコンテナを再起動してください。
 
 ## Redis
 
